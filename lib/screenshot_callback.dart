@@ -57,4 +57,5 @@ class ScreenshotCallback {
   ///
   /// If permission is not granted, it'll be requested.
   Future<void> checkPermission() async => await Permission.storage.request();
+  Future<bool> statusPermission() async => await Permission.storage.isGranted;
 }
