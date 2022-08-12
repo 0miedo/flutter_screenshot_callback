@@ -57,5 +57,35 @@ class ScreenshotCallback {
   ///
   /// If permission is not granted, it'll be requested.
   Future<void> checkPermission() async => await Permission.storage.request();
-  Future<bool> statusPermission() async => await Permission.storage.isGranted;
+  //Future<bool> statusPermission() async => await Permission.storage.isGranted;
+
+  //Revisar permisos para storage
+  Future<Map<Permission, PermissionStatus>> pedirPermisos() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.location,
+      Permission.storage,
+      Permission.manageExternalStorage
+    ].request();
+    return statuses;
+  }
+
+  //Pedir permisos para storage
+  Future<bool> revisarPermisos(bool ra) async {
+    var statusCamera = await Permission.camera.status;
+    var statusStorage = await Permission.storage.status;
+    var statusExternalStorage = await Permission.manageExternalStorage.status;
+    if (!ra) {
+      if (statusStorage.isGranted && statusExternalStorage.isGranted)
+        return true;
+      else
+        return false;
+    } else {
+      if (statusCamera.isGranted &&
+          statusStorage.isGranted &&
+          statusExternalStorage.isGranted)
+        return true;
+      else
+        return false;
+    }
+  }
 }
